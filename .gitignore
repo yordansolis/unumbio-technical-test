@@ -1,0 +1,25 @@
+.env
+.env.dev
+.env.prod
+.env.local
+env
+env.prod
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+venv/
+.venv/
+*.egg-info/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+coverage.xml
+
+# UV
+uv.lock
