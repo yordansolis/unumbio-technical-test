@@ -48,6 +48,26 @@ make lint    # uv run ruff check .
 make format  # uv run ruff format .
 ```
 
+There are two kinds of tests:
+
+| File | Type | Requires network |
+|------|------|-----------------|
+| `tests/test_downloader.py` | Unit | No |
+| `tests/test_session.py` | Integration | Yes (Chromium + live site) |
+| `tests/test_search.py` | Integration | Yes (Chromium + live site) |
+
+Run only unit tests (offline):
+
+```bash
+uv run pytest tests/test_downloader.py -v
+```
+
+Run integration tests (requires installed Chromium and a network connection):
+
+```bash
+uv run pytest tests/test_session.py tests/test_search.py -v
+```
+
 ---
 
 ## Thought Process
