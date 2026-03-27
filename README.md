@@ -33,6 +33,13 @@ output/
   KH8349819_2.jpg
 ```
 
+## Clean
+
+```bash
+make clean
+# removes all files in output/ except .gitkeep
+```
+
 ## Test / Lint
 
 ```bash

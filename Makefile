@@ -1,4 +1,4 @@
-.PHONY: install run test lint format
+.PHONY: install run test lint format clean
 
 install:
 	uv sync && uv run playwright install chromium
@@ -14,3 +14,6 @@ lint:
 
 format:
 	uv run ruff format .
+
+clean:
+	find output/ -type f ! -name '.gitkeep' -delete

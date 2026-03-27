@@ -89,12 +89,8 @@ async def search_trademark(
     logger.info("Found trademark: {} — {}", record.brand, record.owner)
 
     image_url: str | None = None
-    if record.image_path:
-        image_url = (
-            record.image_path
-            if record.image_path.startswith("http")
-            else f"{BASE_URL}/{record.image_path.lstrip('/')}"
-        )
+    if record.logo and record.application_number:
+        image_url = f"{BASE_URL}/trademark-detail-logo/{record.application_number}?type=ts_logo_detail_screen"
 
     return Trademark(
         filing_number=filing_number,

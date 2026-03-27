@@ -24,8 +24,9 @@ def _image_path(filing_number: str) -> Path:
 
 def _build_detail_html(trademark: Trademark) -> str:
     """Generate a self-contained HTML page from trademark data."""
+    local_image = f"{_filename_base(trademark.filing_number)}_2.jpg"
     image_tag = (
-        f'<img src="{trademark.image_url}" alt="Trademark image" style="max-width:400px;">'
+        f'<img src="{local_image}" alt="Trademark image" style="max-width:400px;">'
         if trademark.image_url
         else "<p><em>No image available.</em></p>"
     )
