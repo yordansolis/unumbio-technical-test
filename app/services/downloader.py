@@ -15,10 +15,12 @@ def _filename_base(filing_number: str) -> str:
 
 
 def _html_path(filing_number: str) -> Path:
+    """Return the output path for the HTML detail file."""
     return OUTPUT_DIR / f"{_filename_base(filing_number)}_1.html"
 
 
 def _image_path(filing_number: str) -> Path:
+    """Return the output path for the trademark image file."""
     return OUTPUT_DIR / f"{_filename_base(filing_number)}_2.jpg"
 
 

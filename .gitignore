@@ -23,3 +23,7 @@ coverage.xml
 
 # UV
 uv.lock
+
+output/*.html
+output/*.jpg
+!output/.gitkeep

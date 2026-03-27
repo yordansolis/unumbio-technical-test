@@ -10,6 +10,7 @@ from app.schemas.api_response import SearchResponse
 
 
 def _build_payload(filing_number: str) -> dict:
+    """Build the POST JSON payload for a filing-number search."""
     return {
         "data": {
             "page": "1",
@@ -38,6 +39,7 @@ def _build_payload(filing_number: str) -> dict:
 
 
 def _build_headers(cookies: dict[str, str]) -> dict[str, str]:
+    """Build request headers including the URL-decoded XSRF token."""
     xsrf = urllib.parse.unquote(cookies.get("XSRF-TOKEN", ""))
     return {
         "Content-Type": "application/json",

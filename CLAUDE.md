@@ -8,33 +8,83 @@ This is a Python web scraper technical test for **UNUMBIO SpA**. The goal is to 
 
 ## Tech Stack
 
-- **Python 3.11** (via `venv/`)
+- **Python 3.11+** managed via `uv`
 - **Playwright** (async) — browser automation for session cookie acquisition
-- **aiohttp / httpx / curl_cffi** — direct HTTP requests (choose one; minimize browser usage)
+- **httpx** — async HTTP client for direct API and image requests
 - **tenacity** — retry logic for transient failures
-- **Full async/await** throughout
+- **loguru** — structured logging
+- **pydantic v2** — data validation and schema models
+- **ruff** — linting and formatting
+- **pytest + pytest-asyncio** — test suite
+
+## Project Structure
+
+```
+unumbio-technical-test/
+├── main.py                  # Entry point
+├── app/
+│   ├── config/
+│   │   └── settings.py      # Centralised settings (URLs, timeouts, filing numbers)
+│   ├── middleware/
+│   │   ├── logger.py        # Loguru setup
+│   │   └── retry.py         # Tenacity retry decorators
+│   ├── models/
+│   │   └── trademark.py     # Domain model (TrademarkRecord)
+│   ├── schemas/
+│   │   └── api_response.py  # Pydantic schemas for API responses
+│   └── services/
+│       ├── session.py       # Browser phase — Playwright cookie acquisition
+│       ├── search.py        # Search service — API call to find trademark by filing number
+│       └── downloader.py    # Download service — detail HTML + trademark image
+├── tests/
+│   ├── test_session.py
+│   ├── test_search.py
+│   └── test_downloader.py
+├── output/                  # Scraped files (gitignored except .gitkeep)
+├── pyproject.toml
+├── Makefile
+└── uv.lock
+```
 
 ## Key Architecture Decisions
 
 The scraper separates two concerns:
-1. **Browser phase** (Playwright): Launch browser once to obtain session cookies from the SPA.
-2. **HTTP phase** (aiohttp/httpx/curl_cffi): Use those cookies for all subsequent requests (detail page HTML, image downloads) without spawning more browser instances.
+1. **Browser phase** (`session.py`): Launch Playwright once to obtain session cookies from the SPA.
+2. **HTTP phase** (`search.py`, `downloader.py`): Use those cookies with `httpx` for all subsequent requests — API search, detail page HTML, image downloads — without spawning more browser instances.
 
-The internal REST API endpoints must be discovered by inspecting network calls in the browser (DevTools / Playwright's `on("request")`). Direct HTTP calls to the API avoid full page loads and are far faster.
+Direct HTTP calls to the internal REST API avoid full page loads and are far faster.
 
 ## Commands
 
 ### Setup
 ```bash
-python3.11 -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-playwright install chromium
+uv sync
+uv run playwright install chromium
 ```
 
 ### Run the scraper
 ```bash
-python app/main.py
+uv run python main.py
+# or
+make run
+```
+
+### Test
+```bash
+uv run pytest tests/
+# or
+make test
+```
+
+### Lint / Format
+```bash
+make lint
+make format
+```
+
+### Clean output
+```bash
+make clean
 ```
 
 ### Output
@@ -54,28 +104,7 @@ Files are saved to `output/` with naming convention `KH<number-without-slashes>_
 - **Timeout**: retry before failing
 - **No image**: log and continue without error
 
-
-
 ## Git Workflow
-
-Example of a Professional Instruction
-
-I need you to generate a clear and structured response following best practices for technical documentation.
-
-Response Requirements:
-It must be in plain text (without additional Markdown formatting such as code blocks).
-It must include:
-A clear and professional title
-A brief but precise description
-Use technical, concise, and well-written language.
-Avoid redundancies and unnecessary explanations.
-
-Expected Output Format:
-
-Title: <concept name>
-Description: <clear and professional explanation>
-
-Expected Example:
 
 Title: Git Workflow - Commit Messages (Conventional Commits)
 Description: Standardized structure for writing commit messages that facilitates reading, automation, and maintenance of the project history. Use the format <type>(<scope>): <description>, where type defines the type of change made.
@@ -84,5 +113,5 @@ Types: feat, fix, refactor, test, docs, chore, perf
 Scopes: backend
 
 Examples:
-feat(Technical): add workflow completion
-fix(Technical): handle expired
+feat(backend): add workflow completion
+fix(backend): handle expired session cookies
