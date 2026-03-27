@@ -53,3 +53,36 @@ Files are saved to `output/` with naming convention `KH<number-without-slashes>_
 - **Not found**: log and continue to next number
 - **Timeout**: retry before failing
 - **No image**: log and continue without error
+
+
+
+## Git Workflow
+
+Example of a Professional Instruction
+
+I need you to generate a clear and structured response following best practices for technical documentation.
+
+Response Requirements:
+It must be in plain text (without additional Markdown formatting such as code blocks).
+It must include:
+A clear and professional title
+A brief but precise description
+Use technical, concise, and well-written language.
+Avoid redundancies and unnecessary explanations.
+
+Expected Output Format:
+
+Title: <concept name>
+Description: <clear and professional explanation>
+
+Expected Example:
+
+Title: Git Workflow - Commit Messages (Conventional Commits)
+Description: Standardized structure for writing commit messages that facilitates reading, automation, and maintenance of the project history. Use the format <type>(<scope>): <description>, where type defines the type of change made.
+
+Types: feat, fix, refactor, test, docs, chore, perf
+Scopes: backend
+
+Examples:
+feat(Technical): add workflow completion
+fix(Technical): handle expired
